@@ -1,35 +1,64 @@
 from string import ascii_letters, digits
 
-class AnalyzerTextu:
-    ZNAKY = "ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ" + "áčďéěíňóřšťúůýž" + ascii_letters + digits + " ,.?!;"
+class TextAnalyzer:
+    CHARACTERS = "ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ" + "áčďéěíňóřšťúůýž" + ascii_letters + digits + " ,.?!;"
 
     def __init__(self, text: str):
         self.Text = text
+        self.words = []
 
-    def _je_povoleny_znak(self, znak: str) -> bool:
-        return znak in self.ZNAKY
+    def _char_ok(self, c: str) -> bool:
+        return c in self.CHARACTERS
 
-    def spracuj(self)-> list[str]:
-        filtrovane = []
-        # Prázdny zoznam, do ktorého sa ukladajú ponechané znaky
-
+    def process(self)-> list[str]:
+        # kept characters in list
+        filtered = []
         for z in self.Text:
-            if self._je_povoleny_znak(z):
-                filtrovane.append(z)
+            if self._char_ok(z):
+                filtered.append(z)
+  
+        # spliting to words
+        words = []
+        word = ""
+        for c in filtered:
+            if c == " ":
+                if len(word) > 0:
+                    words.append(word)
+                    word = ""
+            else: 
+                word = word + c
 
-        # Rozdelenie na slová (zvládne aj viac medzier)
-        return "".join(filtrovane).split()
+        if len(word) > 0:
+            words.append(word)
 
+        # reversing
+        reversed_words = []
+        
+        n = len(words) - 1
+        while n >= 0:
+            reversed_words.append(words[n])
+            n -= 1
+
+        self.words = reversed_words
+        return len(words)
+    
+    def print_words(self):
+        text = ""
+        for word in self.words:
+            if text == "":
+                text = text + word
+            else:
+                text = text + " " + word
+        print(text)
 
 def main():
     text = input("Vložte text:")
 
-    analyzator = AnalyzerTextu(text)   
-    slova = analyzator.spracuj()
+    analyzer = TextAnalyzer(text)   
+    count = analyzer.process()
     
-    print(f"\nPočet slov je: {len(slova)}")
+    print(f"\nPočet slov je: {count}")
     print("Slová v opačnom poradí:")
-    print(" ".join(reversed(slova)))   
-
+    analyzer.print_words()    
 
 main()
