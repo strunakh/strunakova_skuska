@@ -1,47 +1,46 @@
-class ObracacCisla:
-    def __init__(self, Cislo: int):
-        self.Cislo = Cislo
+class NumberReverser:
+    def __init__(self, number: int):
+        self.number = number
 
-    def spracuj(self):
-        n = abs(self.Cislo)  # pracuje s absolútnou hodnotou
-        otocene = 0
+    def process(self):
+        n = abs(self.number)  # uses absolute value
+        reversed = 0
 
-        # špeciálny prípad: ak je číslo 0
+        # input value 0
         if n == 0:
             return 0, 0
 
         while n > 0:
-            # Obrátenie pomocou celočíselného delenia a zvyškom po delení
-            cifra = n % 10
-            otocene = otocene * 10 + cifra
+            # Reversing using integer division and modulo
+            figure = n % 10
+            reversed = reversed * 10 + figure
             n //= 10
 
-        # vrátenie znamienka
-        if self.Cislo < 0:
-            otocene = -otocene
+        if self.number < 0:
+            reversed = -reversed
 
-        # Ciferný súčin otočeného čísla
-        sucin = 1
-        m = abs(otocene)
+        # Digit product of the reversed number
+        product = 1
+        m = abs(reversed)
         while m > 0:
-            sucin *= m % 10
+            product *= m % 10
             m //= 10
 
-        return otocene, sucin
+        return reversed, product
 
 
 def main():
     try:
-        cislo = int(input("Napíšte celé číslo: "))
+        number = int(input("Enter integer: "))
     except ValueError:
-        print("Nesprávny vstup")
+        print("Invalid input value")
         return
 
-    obracac = ObracacCisla(cislo)
-    otocene, sucin = obracac.spracuj()
+    reverser = NumberReverser(number)
+    reversed, product = reverser.process()
 
-    print(f"Otočené číslo: {otocene}")
-    print(f"Ciferný súčin: {sucin}")
+    print(f"Reversed number: {reversed}")
+    print(f"Digit product: {product}")
 
 
 main()
